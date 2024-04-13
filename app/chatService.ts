@@ -4,6 +4,13 @@ export default async function chatService(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
     console.log(formData);
+    const query = event.currentTarget.query.value;
+    console.log(query);
+  }
+
+async function queryRedis(query: string) {}
+
+async function queryVectara(query: string) {
     const response = await fetch("https://api.vectara.io:443/v1/stream-query", {
       headers: {
         "Content-Type": "application/json",
@@ -18,4 +25,4 @@ export default async function chatService(event: FormEvent<HTMLFormElement>) {
       .then((data) => console.log(data))
       .catch((error) => console.log(error));
     console.log("hello");
-  }
+}
