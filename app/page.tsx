@@ -4,6 +4,7 @@ import { FormEvent } from 'react'
 
 export default function Chat() {
   async function onSubmit(event: FormEvent<HTMLFormElement>){
+    event.preventDefault()
     const formData = new FormData(event.currentTarget)
     console.log(formData)
     const response = await fetch("https://api.vectara.io:443/v1/stream-query", {
