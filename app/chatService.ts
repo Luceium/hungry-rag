@@ -1,4 +1,6 @@
 import { FormEvent } from "react";
+import { useChat } from "@vectara/react-chatbot/lib";
+import { ReactChatbot } from "@vectara/react-chatbot";
 
 export default async function chatService(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
