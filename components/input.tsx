@@ -22,7 +22,7 @@ const Input = () => {
   }
 
   return (
-    <form onSubmit={onSubmit} className="inline-flex join">
+    <form onSubmit={onSubmit} className="join">
       <input
         type="text"
         placeholder="Type here"
