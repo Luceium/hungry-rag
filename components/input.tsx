@@ -4,7 +4,6 @@ import React, { FormEvent } from "react";
 const Input = () => {
   async function onSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    event.preventDefault()
     const formData = new FormData(event.currentTarget);
     console.log(formData);
     const response = await fetch("https://api.vectara.io:443/v1/stream-query", {

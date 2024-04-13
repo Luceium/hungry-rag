@@ -7,7 +7,7 @@ import { ReactChatbot } from "@vectara/react-chatbot";
 
 export default function Chat() {
   const [response, setResponse] = useState("");
-
+  
   return (
     <div className="flex w-full min-h-screen items-center justify-center flex-col">
       <div>
