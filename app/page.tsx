@@ -1,9 +1,15 @@
 import Image from "next/image";
 
-export default function Home() {
+export default function Chat() {
   return (
-    <div>
-      <h1>Hello</h1>
+    <div className="flex w-full min-h-screen items-center justify-center flex-col">
+      <div>
+
+      </div>
+      <input>
+      </input>
+      
     </div>
   );
 }
+ 
