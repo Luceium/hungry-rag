@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@vectara/react-chatbot": "^1.0.1",
     "clsx": "^2.1.0",
     "framer-motion": "^11.0.28",
     "next": "14.2.1",
