@@ -3,6 +3,7 @@ import React, { FormEvent } from "react";
 
 const Input = () => {
   async function onSubmit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
     event.preventDefault()
     const formData = new FormData(event.currentTarget);
     console.log(formData);
@@ -22,7 +23,7 @@ const Input = () => {
   }
 
   return (
-    <form onSubmit={onSubmit} className="inline-flex join">
+    <form onSubmit={onSubmit} className="join">
       <input
         type="text"
         placeholder="Type here"
