@@ -1,8 +1,8 @@
-'use client'
-import Image from "next/image";
-import { FormEvent } from 'react'
+import Input from "@/components/input";
+import { FormEvent } from "react";
 
 export default function Chat() {
+<<<<<<< HEAD
   async function onSubmit(event: FormEvent<HTMLFormElement>){
     event.preventDefault()
     const formData = new FormData(event.currentTarget)
@@ -23,18 +23,16 @@ export default function Chat() {
   }
 
 
+=======
+>>>>>>> 3d6a86df72b624040f77b423864e8b5a34d6d006
   return (
     <div className="flex w-full min-h-screen items-center justify-center flex-col">
-      
       <div>
-        <div className="bg-gray-600 w-full"></div>
-        <form onSubmit={onSubmit} className="inline-flex join">
-          <input type="text" placeholder="Type here" className="input w-full max-w-xs bg-gray-700 rounded-lg p-2 join-item" />
-          <button className="btn btn-primary p-2 join-item rounded-lg">Ask</button>
-        </form>
-        
+        <div className="bg-gray-600 w-full max-h-[70 vh] min-h-60 rounded-md p-5 mb-10">
+          hi
+        </div>
+        <Input />
       </div>
     </div>
   );
 }
- 
