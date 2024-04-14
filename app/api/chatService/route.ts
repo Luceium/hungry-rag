@@ -47,7 +47,7 @@ async function queryVectara(query: string): Promise<string> {
         },
         corpusKey: [
           {
-            corpus_id: "SOFI-2023.pdf",
+            corpus_id:2,
           },
         ],
         summary: [
