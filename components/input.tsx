@@ -1,7 +1,7 @@
 "use client";
 import React, { FormEvent, useState } from "react";
 
-const Input = () => {
+const Input = ({handleQuery} : {handleQuery : Function}) => {
   const [input, setInput] = useState("");
 
   return (
@@ -13,10 +13,11 @@ const Input = () => {
         onChange={(e) => {
           setInput(e.target.value);
         }}
+        onKeyDown={(e) => {if (e.key === "Enter") handleQuery(input)}}
       />
       <button
         className="btn btn-primary p-2 join-item rounded-lg"
-        onClick={() => fetch("/api/chatService?query=" + input)}
+        onClick={() => handleQuery(input)}
       >
         Ask
       </button>
