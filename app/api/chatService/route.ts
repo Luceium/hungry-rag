@@ -1,9 +1,10 @@
+import { redirect } from "next/dist/server/api-utils";
 import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "redis";
 
-const client = createClient({ url: "redis://10.0.0.95:6379" });
-client.on("error", (err) => console.log("Redis Client Error", err));
-client.connect();
+// const client = createClient({ url: "redis://10.0.0.95:6379" });
+// client.on("error", (err) => console.log("Redis Client Error", err));
+// client.connect();
 
 export async function GET(request: NextRequest) {
   const query = request.nextUrl.searchParams.get("query");
@@ -12,25 +13,25 @@ export async function GET(request: NextRequest) {
   }
 
   //wait until redis is connected
-  await client.connect();
+//   await client.connect();
 
-  // check if redis has the query
-  const redisResponse = await queryRedis(query);
-  if (redisResponse) {
-    return Response.json({ data: redisResponse });
-  }
+//   // check if redis has the query
+//   const redisResponse = await queryRedis(query);
+//   if (redisResponse) {
+//     return Response.json({ data: redisResponse });
+//   }
 
   const vectaraResponse = await queryVectara(query);
 
-  updateRedis(query, vectaraResponse);
+  //updateRedis(query, vectaraResponse);
 
   return Response.json({ data: vectaraResponse });
 }
 
-async function queryRedis(query: string): Promise<string | false> {
-  const value = await client.get("key");
-  return value ?? false;
-}
+// async function queryRedis(query: string): Promise<string | false> {
+//   const value = await client.get("key");
+//   return value ?? false;
+//}
 
 async function queryVectara(query: string): Promise<string> {
   let data = JSON.stringify({
@@ -52,6 +53,7 @@ async function queryVectara(query: string): Promise<string> {
         ],
         summary: [
           {
+            summarizerPromptName: "vectara-summary-ext-v1.2.0",
             max_summarized_results: 10,
             response_lang: "en",
           },
@@ -71,24 +73,13 @@ async function queryVectara(query: string): Promise<string> {
     },
     body: data,
   };
+  const res = await fetch("https://api.vectara.io/v1/query", config);
+  const result = await res.json();
+  console.log(result)
 
-  const res = await fetch("https://api.vectara.io/v1/stream-query", config)
-    .then((response) => {
-      if (!response.ok) {
-        throw new Error("Network Bad");
-      }
-      return response.json();
-    })
-    .then((data) => {
-      console.log(JSON.stringify(data));
-    })
-    .catch((error) => {
-      console.error("error:", error);
-    });
-  console.log(res);
   return "";
 }
 
-async function updateRedis(query: string, response: string) {
-  await client.set(query, response);
-}
+// async function updateRedis(query: string, response: string) {
+//   await client.set(query, response);
+// }
