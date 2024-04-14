@@ -86,9 +86,20 @@ async function queryVectara(query: string): Promise<string> {
     },
     body: data,
   };
-  const res = await fetch("https://api.vectara.io/v1/query", config);
-  const result = await res.json();
-  console.log("result ", result);
+  const res = await fetch("https://api.vectara.io/v1/stream-query", config);
+  const results = (await res.text()).split("\n");
+  const result = results.reduce((final, r) => {
+    if (r.trim() === "") {
+      return final;
+    }
+
+    const parsed = JSON.parse(r);
+    if (parsed.result.summary?.text) {
+      return final + parsed.result.summary.text;
+    }
+
+    return final;
+  }, "");
 
   return result;
 }
