@@ -26,20 +26,20 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({ error: "Query is required" }, { status: 400 });
   }
 
-  //wait until redis is connected
-
   // check if redis has the query
-  const redisResponse = await queryRedis(query);
-  console.log("redisResponse " + redisResponse);
-  if (redisResponse) {
-    return Response.json({ data: redisResponse });
-  }
+  // const redisResponse = await queryRedis(query);
+  // console.log("redisResponse " + redisResponse);
+  // if (redisResponse) {
+  //   return Response.json({ data: redisResponse });
+  // }
 
   const vectaraResponse = await queryVectara(query);
-  console.log("vectaraResponse ", vectaraResponse);
+  const [serverStream, clientStream] = vectaraResponse.tee();
+  serverStream.getReader();
+
   // updateRedis(query, vectaraResponse);
 
-  return Response.json({ data: vectaraResponse });
+  return new Response(clientStream);
 }
 
 async function queryRedis(query: string): Promise<string | false> {
@@ -47,7 +47,7 @@ async function queryRedis(query: string): Promise<string | false> {
   return value ?? false;
 }
 
-async function queryVectara(query: string): Promise<string> {
+async function queryVectara(query: string): Promise<ReadableStream> {
   let data = JSON.stringify({
     query: [
       {
@@ -86,11 +86,19 @@ async function queryVectara(query: string): Promise<string> {
     },
     body: data,
   };
-  const res = await fetch("https://api.vectara.io/v1/query", config);
-  const result = await res.json();
-  console.log("result ", result);
+  const stream: ReadableStream<any> | null = await fetch(
+    "https://api.vectara.io/v1/stream-query",
+    config
+  ).then((res) => res.body);
 
-  return result;
+  if (!stream) {
+    throw new Error("Failed to fetch response from Vectara");
+  }
+
+  // filter out non-ai response information
+  // stream.pipeThrough(new TransformStream({})
+
+  return stream;
 }
 
 async function updateRedis(query: string, response: string) {
